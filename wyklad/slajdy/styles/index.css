@@ -281,6 +281,11 @@
 .vc-chain-lg > .vc-flow-box { padding: 18px 16px; display: flex; flex-direction: column; justify-content: center; }
 .vc-chain-lg small { font-size: 26px; margin-top: 6px; line-height: 1.3; }
 .vc-chain-lg > .vc-flow-arrow { align-self: center; font-size: 30px; flex-basis: 34px; }
+/* średni wariant łańcucha (4+ pola z dłuższymi opisami) */
+.vc-chain-md { font-size: 24px; align-items: stretch; }
+.vc-chain-md > .vc-flow-box { padding: 14px 12px; display: flex; flex-direction: column; justify-content: center; }
+.vc-chain-md small { font-size: 19px; margin-top: 4px; line-height: 1.3; }
+.vc-chain-md > .vc-flow-arrow { align-self: center; font-size: 28px; }
 
 /* diagram zależności buildu: konfiguracja -> receptury -> artefakty */
 .vc-deps {

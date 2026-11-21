@@ -408,7 +408,7 @@ pipeline {
 
 # Wdrożenie i eksploatacja recenzenta AI
 
-<div class="vc-chain">
+<div class="vc-chain vc-chain-md">
   <div class="vc-flow-box">1. Lokalnie<small>skill code review na commicie z Gerrita</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box">2. Interaktywnie<small>link do zmiany → raport → człowiek wybiera uwagi → Gerrit</small></div>
@@ -418,7 +418,7 @@ pipeline {
   <div class="vc-flow-box">4. Gerrit Trigger<small>każdy nowy patchset automatycznie</small></div>
 </div>
 
-<div class="vc-cards" style="--cols: 2; margin-top: 32px">
+<div class="vc-cards vc-cards-lg" style="--cols: 2; margin-top: 20px">
   <div class="vc-card">
     <h3>Reakcja zespołu</h3>
     <p>Najpierw opór: „AI marnuje nasz czas na nieprawdziwe uwagi”. Pomogło ograniczenie szumu.</p>
@@ -429,7 +429,7 @@ pipeline {
   </div>
 </div>
 
-<div class="vc-note">Recenzent AI to też system informatyczny: ma swoje wdrożenie, awarie i utrzymanie.</div>
+<div class="vc-note" style="margin-top: 12px">Recenzent AI to też system informatyczny: ma swoje wdrożenie, awarie i utrzymanie.</div>
 
 ---
 layout: section
