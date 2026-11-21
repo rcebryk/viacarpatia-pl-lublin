@@ -859,18 +859,6 @@ Menu serwisowe → „Symuluj awarię”
 
 ---
 
-# Ćwiczenie: błąd bezpieczeństwa w terenie
-
-<div class="vc-big">W aplikacji wykryto podatność. Macie 3000 maszyn: 60% z dostępem do chmury, reszta offline w różnych krajach.</div>
-
-<div class="vc-cards" style="--cols: 3; margin-top: 28px">
-  <div class="vc-card"><h3>Jak wdrożycie poprawkę?</h3></div>
-  <div class="vc-card"><h3>W jakiej kolejności?</h3></div>
-  <div class="vc-card"><h3>Skąd będziecie wiedzieć, że się udało?</h3></div>
-</div>
-
----
-
 # Podsumowanie
 
 <div class="vc-cards" style="--cols: 3">
