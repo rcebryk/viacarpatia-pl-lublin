@@ -666,7 +666,7 @@ layout: two-cols
 
 # Klucze: maszyna instaluje tylko nasze paczki
 
-<div class="vc-chain">
+<div class="vc-chain vc-chain-lg">
   <div class="vc-flow-box">Jenkins<small>podpisuje paczkę kluczem prywatnym</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box vc-flow-artifact">Paczka + podpis<small>pendrive / chmura / szeregowo</small></div>
