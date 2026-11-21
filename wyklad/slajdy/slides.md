@@ -785,8 +785,8 @@ QList<Drink> defaultMenu()
   <div class="vc-card vc-card-light">
     <h3>Cyber Resilience Act (UE)</h3>
     <ul>
-      <li>obowiązek zgłaszania podatności od 09.2026</li>
-      <li>pełne wymagania od 12.2027</li>
+      <li>zgłaszanie podatności: od 11.09.2026 (już obowiązuje)</li>
+      <li>pełne wymagania: od 11.12.2027</li>
       <li>producent musi dostarczać poprawki bezpieczeństwa przez lata</li>
     </ul>
   </div>
