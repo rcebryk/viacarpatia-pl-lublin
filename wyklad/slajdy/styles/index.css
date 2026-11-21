@@ -231,22 +231,22 @@
 /* --- diagram przepływu (siatka pól i strzałek) ------------------------ */
 .vc-flow {
   display: grid;
-  grid-template-columns: 150px 96px 26px 150px 26px 1fr 26px 116px 26px 116px;
-  grid-template-rows: auto 40px auto;
-  column-gap: 4px;
-  align-items: center;
-  font-size: 19px;
+  grid-template-columns: 170px 62px 160px 34px 1fr 34px 130px 40px 130px;
+  grid-template-rows: auto 64px auto;
+  column-gap: 6px;
+  align-items: stretch;
+  font-size: 22px;
   margin-top: 8px;
 }
-.vc-flow small { display: block; font-size: 15px; opacity: 0.8; }
+.vc-flow small { display: block; font-size: 17px; opacity: 0.85; font-weight: 400; margin-top: 4px; }
 .vc-flow-lane {
-  align-self: stretch;
   display: flex; flex-direction: column; justify-content: center;
-  padding: 0 12px;
+  padding: 0 14px;
   border-radius: 8px;
-  background: rgba(143, 152, 166, 0.35);
+  border-left: 6px solid #9cc3ff;
+  background: rgba(34, 57, 98, 0.95);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.2;
 }
 .vc-flow-box {
   padding: 10px 12px;
@@ -256,19 +256,30 @@
   text-align: center;
   line-height: 1.2;
 }
+.vc-flow > .vc-flow-box { display: flex; flex-direction: column; justify-content: center; }
 .vc-flow-build { text-align: left; }
-.vc-flow-build ul { margin: 4px 0 0; padding-left: 1.1em; font-size: 17px; }
-.vc-flow-build li { margin: 2px 0; line-height: 1.2; }
+.vc-flow-build ul { margin: 6px 0 0; padding-left: 1.1em; font-size: 19px; }
+.vc-flow-build li { margin: 3px 0; line-height: 1.2; }
 .vc-flow-artifact { background: rgba(143, 152, 166, 0.55); font-weight: 700; }
-.vc-flow-machine {
-  grid-column: 10; grid-row: 1 / 4;
+.vc-flow > .vc-flow-machine {
+  grid-column: 9; grid-row: 1 / 4;
   align-self: center;
-  padding: 24px 8px;
+  padding: 36px 8px;
   background: #ffffff; color: #223962;
   font-weight: 700;
 }
-.vc-flow-arrow { text-align: center; font-size: 24px; color: #cfe0ff; }
-.vc-flow-link { grid-column: 6; grid-row: 2; text-align: center; font-size: 17px; color: #cfe0ff; }
+.vc-flow-arrow { text-align: center; font-size: 26px; color: #cfe0ff; }
+.vc-flow > .vc-flow-arrow { align-self: center; }
+.vc-flow-push { font-size: 17px; line-height: 1.1; }
+.vc-flow-link {
+  grid-column: 5; grid-row: 2;
+  align-self: center; justify-self: center;
+  padding: 6px 18px;
+  border: 2px dashed #9cc3ff;
+  border-radius: 20px;
+  background: rgba(8, 16, 32, 0.6);
+  font-size: 19px; color: #cfe0ff;
+}
 .vc-r3 { grid-row: 3; }
 
 /* prosty przepływ w jednym rzędzie: pola i strzałki na przemian */

@@ -169,9 +169,8 @@ Bramka jakości przed każdą zmianą
 # Droga commita
 
 <div class="vc-flow">
-  <div class="vc-flow-lane">Repozytorium<br>aplikacji<small>C++ / Qt</small></div>
-  <div class="vc-flow-box">git push</div>
-  <div class="vc-flow-arrow">→</div>
+  <div class="vc-flow-lane">Repozytorium aplikacji<small>C++ / Qt</small></div>
+  <div class="vc-flow-arrow vc-flow-push">git push<br>→</div>
   <div class="vc-flow-box">Gerrit<small>review: ludzie + AI</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box vc-flow-build">
@@ -179,20 +178,19 @@ Bramka jakości przed każdą zmianą
     <ul>
       <li>build</li>
       <li>testy jednostkowe</li>
-      <li>aktualizacja plików .ts (tłumaczenia)</li>
-      <li>klucze aktualizacji aplikacji</li>
+      <li>pliki .ts (tłumaczenia)</li>
+      <li>podpis: klucz aplikacji</li>
     </ul>
   </div>
   <div class="vc-flow-arrow">→</div>
-  <div class="vc-flow-box vc-flow-artifact">Paczka<br>aplikacji</div>
-  <div class="vc-flow-arrow">→</div>
+  <div class="vc-flow-box vc-flow-artifact">Paczka aplikacji</div>
+  <div class="vc-flow-arrow">↘</div>
   <div class="vc-flow-box vc-flow-machine">Maszyna<br>u klienta</div>
 
   <div class="vc-flow-link">▲ toolchain do cross-kompilacji</div>
 
-  <div class="vc-flow-lane vc-r3">Repozytorium<br>Yocto<small>warstwy, receptury</small></div>
-  <div class="vc-flow-box vc-r3">git push</div>
-  <div class="vc-flow-arrow vc-r3">→</div>
+  <div class="vc-flow-lane vc-r3">Repozytorium Yocto<small>warstwy, receptury</small></div>
+  <div class="vc-flow-arrow vc-flow-push vc-r3">git push<br>→</div>
   <div class="vc-flow-box vc-r3">Gerrit<small>review: ludzie + AI</small></div>
   <div class="vc-flow-arrow vc-r3">→</div>
   <div class="vc-flow-box vc-flow-build vc-r3">
@@ -200,12 +198,12 @@ Bramka jakości przed każdą zmianą
     <ul>
       <li>bitbake: obraz systemu</li>
       <li>toolchain do cross-kompilacji</li>
-      <li>klucze aktualizacji systemu</li>
+      <li>podpis: klucz systemu</li>
     </ul>
   </div>
   <div class="vc-flow-arrow vc-r3">→</div>
-  <div class="vc-flow-box vc-flow-artifact vc-r3">Obraz<br>systemu</div>
-  <div class="vc-flow-arrow vc-r3">→</div>
+  <div class="vc-flow-box vc-flow-artifact vc-r3">Obraz systemu</div>
+  <div class="vc-flow-arrow vc-r3">↗</div>
 </div>
 
 ---
