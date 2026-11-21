@@ -332,7 +332,9 @@ Automatyczny recenzent w pipeline Jenkinsa
   <div class="vc-flow-box">Gerrit<small>komentarze w kodzie</small></div>
 </div>
 
-<div style="--slidev-code-font-size: 17px; margin-top: 16px">
+<div class="vc-file" style="margin-top: 10px; margin-bottom: 0">app/espresso-hmi/ci/Jenkinsfile.ai-review <span>(skrót)</span></div>
+
+<div style="--slidev-code-font-size: 16px">
 
 ```groovy
 pipeline {
@@ -340,8 +342,7 @@ pipeline {
   stages { stage('AI review') { steps {
     withCredentials([...]) {        // konto ai-reviewer w Gerricie + klucz API
       sh 'python ci/ai_review.py'   // diff -> Claude -> komentarze + Code-Review ±1
-    }
-  } } }
+    } } } }
 }
 ```
 
