@@ -1,0 +1,37 @@
+// AI code review zmiany - uruchamiany przez Gerrit Trigger równolegle z buildem,
+// na osobnej maszynie (agent z etykietą "ai-review").
+// Głos Code-Review +1/-1 wystawia skrypt ci/ai_review.py z konta ai-reviewer
+// (Gerrit Trigger ma dla tego joba wyłączone głosowanie).
+
+pipeline {
+    agent { label 'ai-review' }
+
+    options {
+        timestamps()
+        timeout(time: 10, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '30'))
+    }
+
+    environment {
+        GERRIT_URL = 'http://gerrit:8080'
+        AI_REVIEW_MODEL = 'claude-opus-5-5'
+        AI_REVIEW_EFFORT = 'medium'
+    }
+
+    stages {
+        stage('AI review') {
+            steps {
+                script {
+                    currentBuild.displayName = "#${env.BUILD_NUMBER} zmiana ${env.GERRIT_CHANGE_NUMBER ?: '-'}/${env.GERRIT_PATCHSET_NUMBER ?: '-'}"
+                }
+                withCredentials([
+                    usernamePassword(credentialsId: 'gerrit-ai-reviewer',
+                                     usernameVariable: 'GERRIT_USER', passwordVariable: 'GERRIT_PASSWORD'),
+                    string(credentialsId: 'anthropic-api-key', variable: 'ANTHROPIC_API_KEY'),
+                ]) {
+                    sh '/opt/ai-review/venv/bin/python ci/ai_review.py'
+                }
+            }
+        }
+    }
+}

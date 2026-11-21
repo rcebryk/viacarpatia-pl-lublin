@@ -1,0 +1,131 @@
+// Pipeline buildu aplikacji Espresso HMI.
+// Uruchamia go Gerrit Trigger dla każdego nowego patchsetu; wynik trafia
+// do Gerrita jako Verified +1 (sukces) albo -1 (błąd buildu lub testów).
+
+pipeline {
+    agent { label 'qt6' }
+
+    options {
+        timestamps()
+        ansiColor('xterm')
+        timeout(time: 30, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '30'))
+    }
+
+    environment {
+        BUILD_DIR = 'build'
+    }
+
+    stages {
+        stage('Zmiana') {
+            steps {
+                script {
+                    currentBuild.displayName = "#${env.BUILD_NUMBER} zmiana ${env.GERRIT_CHANGE_NUMBER ?: '-'}/${env.GERRIT_PATCHSET_NUMBER ?: '-'}"
+                    currentBuild.description = env.GERRIT_CHANGE_SUBJECT ?: ''
+                }
+                sh '''
+                    git log -1 --format='Commit: %h %s (%an)'
+                    cmake --version | head -1
+                    g++ --version | head -1
+                '''
+            }
+        }
+
+        stage('Konfiguracja') {
+            steps {
+                sh 'cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Release -DESPRESSO_WERROR=ON'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'cmake --build "$BUILD_DIR"'
+            }
+        }
+
+        stage('Testy jednostkowe') {
+            steps {
+                // Błędy testów nie przerywają pipeline'u: junit oznacza build jako
+                // UNSTABLE, a Gerrit Trigger zamienia to na Verified -1.
+                sh 'ctest --test-dir "$BUILD_DIR" --output-on-failure || true'
+            }
+            post {
+                always {
+                    junit testResults: "${BUILD_DIR}/test-results/*.xml", allowEmptyResults: false
+                }
+            }
+        }
+
+        stage('Analiza QML') {
+            steps {
+                // --max-warnings 0: każde ostrzeżenie oblewa etap (domyślnie qmllint kończy się kodem 0)
+                sh '/usr/lib64/qt6/bin/qmllint --max-warnings 0 -I "$BUILD_DIR" qml/*.qml'
+            }
+        }
+
+        stage('Tłumaczenia (.ts)') {
+            steps {
+                sh '''
+                    cmake --build "$BUILD_DIR" --target update_translations
+                    if git diff --quiet -- i18n/; then
+                        echo "Pliki .ts aktualne."
+                    else
+                        echo "Nowe lub zmienione teksty do przetłumaczenia:"
+                        git diff --stat -- i18n/
+                        mkdir -p dist/i18n && cp i18n/*.ts dist/i18n/
+                    fi
+                    echo "Nieprzetłumaczone teksty: $(grep -c 'type="unfinished"' i18n/*.ts || true)"
+                '''
+            }
+        }
+
+        stage('Cross-build aarch64 (SDK z Yocto)') {
+            when {
+                expression { fileExists("${env.ESPRESSO_SDK_DIR}/version-cortexa53-nocrypto-poky-linux") }
+            }
+            steps {
+                // Toolchain do cross-kompilacji pochodzi z buildu Yocto (populate_sdk)
+                sh '''
+                    set +ux   # skrypt SDK ustawia dziesiątki zmiennych - bez zaśmiecania logu
+                    . "$ESPRESSO_SDK_DIR"/environment-setup-*
+                    set -x
+                    echo "Kompilator: $CXX" | cut -c1-60
+                    cmake -S . -B build-aarch64 -DCMAKE_TOOLCHAIN_FILE="$CMAKE_TOOLCHAIN_FILE" \
+                          -DCMAKE_BUILD_TYPE=Release -DESPRESSO_BUILD_TESTS=OFF
+                    cmake --build build-aarch64
+                    file build-aarch64/espresso-hmi
+                '''
+            }
+        }
+
+        stage('Paczka aplikacji') {
+            steps {
+                withCredentials([file(credentialsId: 'app-signing-key', variable: 'SIGNING_KEY')]) {
+                    sh '''
+                        VERSION=$(sed -n 's/^project(espresso-hmi VERSION \\([0-9.]*\\).*/\\1/p' CMakeLists.txt)
+                        TAG="${VERSION}-c${GERRIT_CHANGE_NUMBER:-0}p${GERRIT_PATCHSET_NUMBER:-0}"
+                        mkdir -p dist
+                        for ARCH_DIR in build:x86_64 build-aarch64:aarch64; do
+                            DIR=${ARCH_DIR%%:*}; ARCH=${ARCH_DIR##*:}
+                            [ -x "$DIR/espresso-hmi" ] || continue
+                            PKG="dist/espresso-hmi-${TAG}-${ARCH}.tar.gz"
+                            rm -rf "stage-$ARCH"
+                            cmake --install "$DIR" --prefix "stage-$ARCH/usr" --strip >/dev/null
+                            tar -czf "$PKG" -C "stage-$ARCH" .
+                            sha256sum "$PKG" > "$PKG.sha256"
+                            # Podpis Ed25519: maszyna zainstaluje tylko paczkę z poprawnym podpisem
+                            openssl pkeyutl -sign -rawin -inkey "$SIGNING_KEY" -in "$PKG" -out "$PKG.sig"
+                            echo "Paczka: $PKG ($(du -h "$PKG" | cut -f1)), podpis: $PKG.sig"
+                        done
+                    '''
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true, fingerprint: true
+        }
+    }
+}
