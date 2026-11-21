@@ -1,0 +1,17 @@
+{
+  "name": "wyklad-slajdy",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "slidev --port 3030",
+    "dev:remote": "slidev --port 3030 --remote",
+    "lecture": "./slidev.sh lecture",
+    "build": "slidev build",
+    "export": "slidev export --timeout 60000"
+  },
+  "devDependencies": {
+    "@slidev/cli": "53.0.0",
+    "@slidev/theme-default": "0.25.0",
+    "playwright-chromium": "1.64.1"
+  }
+}
