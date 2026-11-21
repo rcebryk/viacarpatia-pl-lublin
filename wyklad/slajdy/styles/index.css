@@ -348,6 +348,7 @@
 .vc-card-light { background: rgba(143, 152, 166, 0.45); }
 .vc-cards-lg .vc-card h3 { font-size: 30px; }
 .vc-cards-lg .vc-card p { font-size: 26px; line-height: 1.35; }
+.vc-cards-lg .vc-card ul { font-size: 26px; }
 
 /* --- duże liczby ------------------------------------------------------- */
 .vc-stat { font-size: 60px; font-weight: 700; line-height: 1; }

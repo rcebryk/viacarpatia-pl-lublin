@@ -701,17 +701,17 @@ layout: two-cols
 
 # SDK: toolchain z Yocto w Qt Creatorze
 
-<div class="vc-chain">
+<div class="vc-chain vc-chain-lg">
   <div class="vc-flow-box">bitbake<small>-c populate_sdk</small></div>
   <div class="vc-flow-arrow">→</div>
-  <div class="vc-flow-box vc-flow-artifact">Instalator SDK<small>jeden plik .sh, 1,3 GB</small></div>
+  <div class="vc-flow-box vc-flow-artifact">Instalator SDK<small>jeden plik .sh,<br>1,3&nbsp;GB</small></div>
   <div class="vc-flow-arrow">→</div>
-  <div class="vc-flow-box">/opt/poky/6.0.4<small>26 s, 7,3 GB</small></div>
+  <div class="vc-flow-box">/opt/poky/6.0.4<small>26&nbsp;s, 7,3&nbsp;GB</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box">Qt Creator<small>kit "RPi 3 (Yocto)"</small></div>
 </div>
 
-<div class="vc-cards" style="--cols: 3; margin-top: 24px">
+<div class="vc-cards vc-cards-lg" style="--cols: 3; margin-top: 28px">
   <div class="vc-card">
     <h3>Toolchain</h3>
     <ul>
