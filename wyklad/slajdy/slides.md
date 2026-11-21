@@ -318,7 +318,7 @@ Automatyczny recenzent w pipeline Jenkinsa
 
 # Architektura
 
-<div class="vc-chain">
+<div class="vc-chain vc-chain-md">
   <div class="vc-flow-box">Programista<small>git push</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box">Gerrit<small>nowy patchset</small></div>
@@ -327,10 +327,12 @@ Automatyczny recenzent w pipeline Jenkinsa
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box">Jenkins<small>pipeline AI review</small></div>
   <div class="vc-flow-arrow">→</div>
-  <div class="vc-flow-box vc-flow-artifact">Agent na osobnej VM<small>Copilot CLI w Bubblewrap / w demo: Claude API</small></div>
+  <div class="vc-flow-box vc-flow-artifact">Agent na VM<small>Copilot CLI w Bubblewrap; demo: Claude API</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box">Gerrit<small>komentarze w kodzie</small></div>
 </div>
+
+<div style="--slidev-code-font-size: 17px; margin-top: 16px">
 
 ```groovy
 pipeline {
@@ -342,6 +344,8 @@ pipeline {
   } } }
 }
 ```
+
+</div>
 
 ---
 
