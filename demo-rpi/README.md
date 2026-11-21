@@ -22,7 +22,9 @@ meta-espresso/            nasza warstwa Yocto
   recipes-apps/           receptura aplikacji + usługa systemd + konfiguracja KMS
   recipes-qt/qt6/         qtbase_%.bbappend - przykład modyfikacji cudzej receptury
   recipes-core/espresso-network/  stały adres 192.168.77.2 na Ethernecie
+  recipes-core/os-release/  wersja systemu w /etc/os-release (menu serwisowe)
 scripts/                  build, SDK, flash, deploy, demo awarii
+CHANGELOG.md              wersje systemu (ESPRESSO_SYSTEM_VERSION w kas/rpi3-qt6.yml)
 ```
 
 ## Przygotowanie (przed wykładem, raz)
