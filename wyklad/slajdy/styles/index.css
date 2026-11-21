@@ -314,6 +314,8 @@
 .vc-card p { margin: 0; }
 .vc-card ul { margin: 0; font-size: 22px; }
 .vc-card-light { background: rgba(143, 152, 166, 0.45); }
+.vc-cards-lg .vc-card h3 { font-size: 30px; }
+.vc-cards-lg .vc-card p { font-size: 26px; line-height: 1.35; }
 
 /* --- duże liczby ------------------------------------------------------- */
 .vc-stat { font-size: 60px; font-weight: 700; line-height: 1; }

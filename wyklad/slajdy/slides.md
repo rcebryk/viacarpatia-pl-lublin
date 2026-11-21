@@ -674,7 +674,7 @@ layout: two-cols
   <div class="vc-flow-box">Maszyna<small>sprawdza podpis kluczem publicznym z obrazu systemu</small></div>
 </div>
 
-<div class="vc-cards" style="--cols: 2; margin-top: 28px">
+<div class="vc-cards vc-cards-lg" style="--cols: 2; margin-top: 28px">
   <div class="vc-card">
     <h3>Osobne klucze</h3>
     <p>Inne dla aktualizacji aplikacji, inne dla systemu. Wyciek jednego nie otwiera wszystkiego.</p>
