@@ -804,6 +804,10 @@ W kawiarni nie ma administratora
 
 # Projektuj pod awarię
 
+<div class="vc-file">demo-rpi/meta-espresso/recipes-apps/espresso-hmi/files/espresso-hmi.service <span>(skrót)</span></div>
+
+<div style="--slidev-code-font-size: 17px">
+
 ```ini {5-6|all}
 [Service]
 ExecStart=/usr/bin/espresso-hmi
@@ -815,6 +819,8 @@ RestartSec=1
 [Install]
 WantedBy=multi-user.target
 ```
+
+</div>
 
 <div class="vc-note">Aplikacja się wywróci? <code>systemd</code> podniesie ją po sekundzie. Nikt nie musi przyjeżdżać.</div>
 
