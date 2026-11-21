@@ -872,7 +872,7 @@ Menu serwisowe → „Symuluj awarię”
 
 ---
 
-# Czego szukają pracodawcy w embedded i DevOps
+# Czego szukają pracodawcy w embedded i middleware
 
 <div class="vc-cards" style="--cols: 3">
   <div class="vc-card">
