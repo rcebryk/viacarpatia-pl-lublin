@@ -1,0 +1,16 @@
+# Duże pliki - poza gitem
+*.mp4
+*.mkv
+*.mov
+*.wic
+*.wic.bz2
+*.img
+*.iso
+
+# Pliki tymczasowe edytorów / pakietu Office
+*~
+.~lock.*#
+~$*
+# pliki wymiany edytorów
+*.swp
+*.swo
