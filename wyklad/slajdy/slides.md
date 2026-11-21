@@ -170,7 +170,7 @@ Bramka jakości przed każdą zmianą
 
 <div class="vc-flow">
   <div class="vc-flow-lane">Repozytorium aplikacji<small>C++ / Qt</small></div>
-  <div class="vc-flow-arrow vc-flow-push"><b>git push</b><br>→</div>
+  <div class="vc-flow-arrow vc-flow-push"><b>git push</b>→</div>
   <div class="vc-flow-box">Gerrit<small>review:<br>ludzie + AI</small></div>
   <div class="vc-flow-arrow">→</div>
   <div class="vc-flow-box vc-flow-build">
@@ -190,7 +190,7 @@ Bramka jakości przed każdą zmianą
   <div class="vc-flow-link">▲ toolchain do cross-kompilacji</div>
 
   <div class="vc-flow-lane vc-r3">Repozytorium Yocto<small>warstwy, receptury</small></div>
-  <div class="vc-flow-arrow vc-flow-push vc-r3"><b>git push</b><br>→</div>
+  <div class="vc-flow-arrow vc-flow-push vc-r3"><b>git push</b>→</div>
   <div class="vc-flow-box vc-r3">Gerrit<small>review:<br>ludzie + AI</small></div>
   <div class="vc-flow-arrow vc-r3">→</div>
   <div class="vc-flow-box vc-flow-build vc-r3">

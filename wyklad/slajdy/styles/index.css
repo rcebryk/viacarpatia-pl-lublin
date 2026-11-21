@@ -274,9 +274,11 @@
   font-size: 34px; font-weight: 700; color: #e3eeff;
   -webkit-text-stroke: 1.5px #e3eeff;   /* grubsza kreska strzałki */
 }
-.vc-flow > .vc-flow-push { font-size: 34px; line-height: 1; }
+.vc-flow > .vc-flow-push { position: relative; }
+/* podpis nad strzałką - poza przepływem, więc strzałka stoi na tej samej wysokości co pozostałe */
 .vc-flow-push b {
-  display: inline-block; margin-bottom: 4px; padding: 2px 6px;
+  position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%);
+  display: inline-block; margin-bottom: 2px; padding: 2px 6px;
   border-radius: 6px; background: rgba(156, 195, 255, 0.25);
   font-size: 18px; font-weight: 700; color: #ffffff;
   -webkit-text-stroke: 0; white-space: nowrap;
