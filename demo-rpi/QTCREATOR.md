@@ -96,7 +96,7 @@ ssh root@192.168.77.2 systemctl start espresso-hmi
 
 ## Uwagi
 - Zegar RPi: `./scripts/deploy.sh` i `crash-demo.sh` ustawiają go z laptopa. Qt Creator tego nie robi,
-  więc przy pracy tylko z IDE uruchom raz `ssh root@192.168.77.2 "date -u -s '$(date -u '+%F %T')'"`.
+  więc przy pracy tylko z IDE uruchom raz `./scripts/sync-time.sh`.
 - gdbserver i root bez hasła są tylko w obrazie deweloperskim (`espresso-image.bb`). W obrazie
   produkcyjnym nie powinno ich być.
 - Ten sam toolchain (`demo-rpi/sdk`) buduje aplikację w Jenkinsie (`demo-ci`, etap cross-build).
