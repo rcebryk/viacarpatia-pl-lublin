@@ -1,0 +1,7 @@
+{
+  "hwcursor": false,
+  "outputs": [
+    { "name": "DSI1",  "mode": "preferred" },
+    { "name": "HDMI1", "mode": "off" }
+  ]
+}

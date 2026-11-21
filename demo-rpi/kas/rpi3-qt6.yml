@@ -1,0 +1,96 @@
+# Konfiguracja buildu dla narzędzia kas (https://kas.readthedocs.io)
+#
+# Cały "przepis na system operacyjny" w jednym pliku:
+#   - jakie warstwy (repozytoria) i w jakich DOKŁADNIE wersjach (commit),
+#   - dla jakiej maszyny, jaka dystrybucja,
+#   - jakie dodatkowe ustawienia local.conf.
+#
+# Uruchomienie:  ./scripts/build.sh
+
+header:
+  version: 19
+
+machine: raspberrypi3-64      # Raspberry Pi 3B+ w trybie 64-bit (aarch64)
+distro: poky                  # dystrybucja referencyjna Yocto
+target: espresso-image        # nasz obraz (meta-espresso/recipes-core/images)
+
+# Yocto 6.0 "wrynose" (LTS, wsparcie do 04.2030).
+# Od 6.0 nie ma już jednego repozytorium "poky": bitbake, openembedded-core
+# i meta-yocto są osobnymi repozytoriami.
+repos:
+  bitbake:
+    url: https://git.openembedded.org/bitbake
+    tag: yocto-6.0.4
+    commit: 51fd94a67fa17650a9ff623492005972bbc7d26f
+    layers: {}                # samo narzędzie, nie warstwa
+
+  core:
+    url: https://git.openembedded.org/openembedded-core
+    tag: yocto-6.0.4
+    commit: 0f03c732a0a2d0506b41b1abe60b3f368b2300dc
+    layers:
+      meta:
+
+  meta-yocto:
+    url: https://git.yoctoproject.org/meta-yocto
+    tag: yocto-6.0.4
+    commit: 7c25b11156553145fa6b241a2d4f65d94438f804
+    layers:
+      meta-poky:
+
+  meta-openembedded:
+    url: https://git.openembedded.org/meta-openembedded
+    branch: wrynose
+    commit: c0fcd7cca3760ef24e087ac4a31b8f357cb204da
+    layers:
+      meta-oe:
+      meta-python:            # wymagana przez meta-qt6
+
+  meta-raspberrypi:           # BSP: kernel, bootloader, firmware dla RPi
+    url: https://git.yoctoproject.org/meta-raspberrypi
+    branch: wrynose
+    commit: 919588393f41b48cb6c5d832aa35e58a19b6762d
+
+  meta-qt6:                   # Qt 6.12 (open source), zgodne z wrynose
+    url: https://code.qt.io/yocto/meta-qt6.git
+    branch: "6.12"
+    commit: 5fcf0548f31b26d927652e01bc92779a0d4ea62d
+
+  espresso:                   # nasza warstwa - leży w tym repozytorium
+    layers:
+      # ścieżka względem korzenia repozytorium gita (wyklad-pl-embedded-devops/)
+      demo-rpi/meta-espresso:
+
+local_conf_header:
+  10_system: |
+    # systemd jako init: usługi, automatyczny restart aplikacji, journal
+    INIT_MANAGER = "systemd"
+
+    # Grafika bez X11 i Waylanda: Qt rysuje bezpośrednio przez KMS/DRM (eglfs).
+    # Tak samo jak na prawdziwych maszynach HMI - jedna aplikacja na cały ekran.
+    DISTRO_FEATURES:remove = "x11 wayland vulkan"
+    DISTRO_FEATURES:append = " opengl"
+
+  20_rpi_display: |
+    # Pełny sterownik KMS (zamiast domyślnego dla RPi3 "fake KMS")
+    VC4DTBO = "vc4-kms-v3d"
+    # Oficjalny wyświetlacz 7" DSI z dotykiem (FT5406)
+    RPI_EXTRA_CONFIG = "\ndtoverlay=vc4-kms-dsi-7inch\n"
+    # Konsola na UART (GPIO 14/15) - ratunek, gdy ekran i sieć zawiodą
+    ENABLE_UART = "1"
+    # Firmware Wi-Fi/BT ma osobną licencję - trzeba ją świadomie zaakceptować
+    LICENSE_FLAGS_ACCEPTED = "synaptics-killswitch"
+
+  30_build: |
+    # Usuwanie katalogów roboczych po zbudowaniu pakietu: zamiast ~150 GB
+    # zostaje kilkadziesiąt GB. Wyjątek: nasza aplikacja (dla devtool).
+    INHERIT += "rm_work"
+    RM_WORK_EXCLUDE += "espresso-hmi"
+
+    # Qt kompiluje się ciężko (ok. 1 GB RAM na proces kompilatora):
+    # ograniczamy równoległość, żeby przy 31 GB RAM nie zabrakło pamięci
+    BB_NUMBER_THREADS = "6"
+    PARALLEL_MAKE = "-j 6"
+
+    # Formaty obrazu: .wic.bz2 + .wic.bmap (szybkie flashowanie bmaptool)
+    IMAGE_FSTYPES = "wic.bz2 wic.bmap"

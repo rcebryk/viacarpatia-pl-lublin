@@ -1,0 +1,11 @@
+# Port Ethernet RPi:
+#  - jeśli w sieci jest serwer DHCP, dostaniemy z niego adres,
+#  - niezależnie od tego zawsze mamy stały adres 192.168.77.2/24,
+#    więc laptop podłączony kablem bezpośrednio (192.168.77.1/24)
+#    zawsze widzi maszynę - bez zależności od sieci uczelni.
+[Match]
+Name=eth* en*
+
+[Network]
+DHCP=ipv4
+Address=192.168.77.2/24

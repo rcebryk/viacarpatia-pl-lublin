@@ -1,0 +1,31 @@
+[Unit]
+Description=Espresso HMI (Qt 6 / QML)
+# Czekamy na urządzenie wejściowe/graficzne obsłużone przez udev
+After=systemd-udev-trigger.service systemd-user-sessions.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/espresso-hmi
+
+# Qt rysuje bezpośrednio przez KMS/DRM, bez serwera okien
+Environment=QT_QPA_PLATFORM=eglfs
+Environment=QT_QPA_EGLFS_INTEGRATION=eglfs_kms
+Environment=QT_QPA_EGLFS_KMS_CONFIG=/etc/espresso-hmi/kms.json
+Environment=QT_QPA_EGLFS_HIDECURSOR=1
+# Fizyczny rozmiar ekranu 7" (mm) - poprawne DPI dla czcionek
+Environment=QT_QPA_EGLFS_PHYSICAL_WIDTH=155
+Environment=QT_QPA_EGLFS_PHYSICAL_HEIGHT=86
+Environment=XDG_RUNTIME_DIR=/run/espresso-hmi
+# Qt wymaga locale UTF-8 (C.UTF-8 jest wbudowane w glibc)
+Environment=LANG=C.UTF-8
+# Czas polski bez pakietu tzdata: reguła POSIX (CET, zmiana czasu w marcu i październiku)
+Environment=TZ=CET-1CEST,M3.5.0,M10.5.0/3
+RuntimeDirectory=espresso-hmi
+
+# EKSPLOATACJA: aplikacja się wywróci -> systemd podnosi ją po 1 s.
+# Na maszynie w kawiarni nie ma administratora, który zrobi restart.
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
