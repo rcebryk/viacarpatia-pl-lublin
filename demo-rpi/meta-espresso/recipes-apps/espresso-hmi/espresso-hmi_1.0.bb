@@ -12,6 +12,7 @@ SRC_URI = " \
     file://espresso-hmi/ \
     file://espresso-hmi.service \
     file://kms.json \
+    file://50-espresso-fonts.conf \
 "
 S = "${UNPACKDIR}/espresso-hmi"
 
@@ -27,13 +28,16 @@ do_install:append() {
     install -m 0644 ${UNPACKDIR}/espresso-hmi.service ${D}${systemd_system_unitdir}/
     install -d ${D}${sysconfdir}/espresso-hmi
     install -m 0644 ${UNPACKDIR}/kms.json ${D}${sysconfdir}/espresso-hmi/
+    # Czcionka: "Noto Sans" (domyślna Qt na eglfs) -> Liberation Sans, zamiast Liberation Mono
+    install -d ${D}${sysconfdir}/fonts/conf.d
+    install -m 0644 ${UNPACKDIR}/50-espresso-fonts.conf ${D}${sysconfdir}/fonts/conf.d/
 }
 
 # Usługa startuje automatycznie przy starcie systemu
 SYSTEMD_SERVICE:${PN} = "espresso-hmi.service"
 SYSTEMD_AUTO_ENABLE = "enable"
 
-FILES:${PN} += "${sysconfdir}/espresso-hmi"
+FILES:${PN} += "${sysconfdir}/espresso-hmi ${sysconfdir}/fonts/conf.d"
 
 # Zależności w czasie działania: wtyczka platformy eglfs, moduły QML,
 # czcionka z polskimi znakami
