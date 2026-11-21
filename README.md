@@ -22,3 +22,10 @@ HoReCa i automatów vendingowych - od commita do maszyny w kawiarni.
 - System dla Raspberry Pi (Yocto + kas w Dockerze): [demo-rpi/README.md](demo-rpi/README.md)
 - Cross-kompilacja i debugowanie na RPi w Qt Creatorze: [demo-rpi/QTCREATOR.md](demo-rpi/QTCREATOR.md)
 - Gerrit + Jenkins + AI code review lokalnie w Dockerze: [demo-ci/README.md](demo-ci/README.md)
+
+## Licencje
+
+- Kod (aplikacja, dema, skrypty, pipeline'y, kod prezentacji): [MIT](LICENSE).
+- Treść wykładu (slajdy, konspekt): [CC BY 4.0](wyklad/LICENSE.md),
+  z wyjątkiem logotypów i tła szablonu oraz czcionki Carlito (szczegóły w tym pliku).
+
