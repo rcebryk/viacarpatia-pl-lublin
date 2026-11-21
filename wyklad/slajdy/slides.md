@@ -165,6 +165,8 @@ layout: section
 Bramka jakości przed każdą zmianą
 
 ---
+routeAlias: droga
+---
 
 # Droga commita
 
