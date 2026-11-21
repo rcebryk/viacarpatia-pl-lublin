@@ -510,8 +510,8 @@ layout: two-cols
     <div class="vc-deps-title">bitbake espresso-image</div>
     <div class="vc-flow-box">espresso-image.bb<small>obraz: lista pakietów (IMAGE_INSTALL) + SDK</small></div>
     <div class="vc-deps-sub">
-      <div class="vc-flow-box">espresso-hmi_1.0.bb<small>aplikacja z app/espresso-hmi</small></div>
-      <div class="vc-flow-box">espresso-network_1.0.bb<small>sieć: DHCP + stały adres</small></div>
+      <div class="vc-flow-box"><span class="nw">espresso-hmi_1.0.bb</span><small>aplikacja z <span class="nw">app/espresso-hmi</span></small></div>
+      <div class="vc-flow-box"><span class="nw">espresso-network_1.0.bb</span><small>sieć: DHCP + stały adres</small></div>
       <div class="vc-flow-box">qtbase_%.bbappend<small>Qt rysuje przez eglfs</small></div>
       <div class="vc-flow-box">kernel, bootloader, Qt…<small>receptury z warstw społeczności</small></div>
     </div>
