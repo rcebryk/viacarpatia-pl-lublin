@@ -46,10 +46,10 @@ CI/CD i eksploatacja oprogramowania HMI w ekspresach do kawy
   </div>
 </div>
 
-<div class="vc-cards vc-about-more" style="--cols: 2">
+<div class="vc-cards vc-about-more" style="grid-template-columns: 1fr 1.9fr">
   <div class="vc-card">
     <h3>Role</h3>
-    <ul style="display: grid; grid-template-columns: 1fr 1fr; column-gap: 24px">
+    <ul>
       <li>Konsultant</li>
       <li>Programista C++/Qt</li>
       <li>Architekt</li>
@@ -67,11 +67,13 @@ CI/CD i eksploatacja oprogramowania HMI w ekspresach do kawy
 </div>
 
 <style>
+.vc-about-stats .vc-card { display: flex; flex-direction: column; text-align: center; }
+.vc-about-stats .vc-stat-label { flex: 1; display: flex; align-items: center; justify-content: center; }
 .vc-about-stats .vc-stat { font-size: 50px; }
 .vc-about-stats .vc-stat-label { font-size: 21px; line-height: 1.3; }
 .vc-about-more .vc-card h3 { font-size: 28px; }
-.vc-about-more .vc-card ul { font-size: 22px; }
-.vc-about-more .vc-card li { margin: 2px 0; }
+.vc-about-more .vc-card ul { font-size: 23px; }
+.vc-about-more .vc-card li { margin: 3px 0; }
 .vc-about-more .vc-card h3 { margin-bottom: 6px; }
 </style>
 
