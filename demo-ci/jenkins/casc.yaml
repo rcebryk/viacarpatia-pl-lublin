@@ -1,0 +1,198 @@
+# Konfiguracja Jenkinsa jako kod (Configuration as Code).
+# ${nazwa} = zawartość pliku /run/secrets/nazwa (katalog demo-ci/secrets, poza gitem).
+
+jenkins:
+  systemMessage: "Espresso HMI CI - demo wykładu (Gerrit + Jenkins + AI review)"
+  numExecutors: 0          # nic nie buduje się na kontrolerze, tylko na agentach
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: admin
+          password: "${jenkins_admin_password}"
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: true
+  nodes:
+    - permanent:
+        name: build-agent
+        nodeDescription: "Serwer buildów: Fedora, Qt 6, CMake, toolchain z Yocto"
+        labelString: "linux qt6 build"
+        numExecutors: 2
+        remoteFS: /home/jenkins/agent
+        launcher:
+          ssh:
+            host: build-agent
+            port: 22
+            credentialsId: agent-ssh
+            sshHostKeyVerificationStrategy: nonVerifyingKeyVerificationStrategy
+        nodeProperties:
+          - envVars:
+              env:
+                - key: ESPRESSO_SDK_DIR
+                  value: "${ESPRESSO_SDK_DIR:-/opt/espresso-sdk}"
+    - permanent:
+        name: ai-review-vm
+        nodeDescription: "Osobna maszyna na AI review (Claude API)"
+        labelString: "ai-review"
+        numExecutors: 1
+        remoteFS: /home/jenkins/agent
+        launcher:
+          ssh:
+            host: ai-review-vm
+            port: 22
+            credentialsId: agent-ssh
+            sshHostKeyVerificationStrategy: nonVerifyingKeyVerificationStrategy
+
+security:
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "acceptFirstConnectionStrategy"
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: gerrit-ssh
+              description: "Konto jenkins w Gerricie (git + stream-events)"
+              username: jenkins
+              privateKeySource:
+                directEntry:
+                  privateKey: "${gerrit_jenkins_key}"
+          - basicSSHUserPrivateKey:
+              scope: SYSTEM
+              id: agent-ssh
+              description: "Logowanie Jenkinsa na agentów"
+              username: jenkins
+              privateKeySource:
+                directEntry:
+                  privateKey: "${jenkins_agent_key}"
+          - usernamePassword:
+              scope: GLOBAL
+              id: gerrit-ai-reviewer
+              description: "Konto ai-reviewer w Gerricie (REST: komentarze i Code-Review)"
+              username: ai-reviewer
+              password: "${gerrit_ai_reviewer_password}"
+          - string:
+              scope: GLOBAL
+              id: anthropic-api-key
+              description: "Klucz Claude API (pusty = dry-run)"
+              secret: "${anthropic_api_key:-}"
+          - file:
+              scope: GLOBAL
+              id: app-signing-key
+              description: "Klucz prywatny do podpisu paczek aplikacji"
+              fileName: app_signing_key.pem
+              secretBytes: "${readFileBase64:/run/secrets/app_signing_key.pem}"
+
+unclassified:
+  location:
+    url: "http://localhost:8080/"
+  gerrit-trigger:
+    servers:
+      - name: gerrit
+        noConnectionOnStartup: false
+        config:
+          gerritHostName: gerrit
+          gerritSshPort: 29418
+          gerritUserName: jenkins
+          gerritAuthKeyFile: /run/secrets/gerrit_jenkins_key
+          gerritFrontEndUrl: "http://localhost:8081/"
+          # Głosy po buildzie: wynik buildu i testów -> Verified, Code-Review zostaje ludziom i AI
+          gerritBuildStartedVerifiedValue: 0
+          gerritBuildStartedCodeReviewValue: 0
+          gerritBuildSuccessfulVerifiedValue: 1
+          gerritBuildSuccessfulCodeReviewValue: 0
+          gerritBuildFailedVerifiedValue: -1
+          gerritBuildFailedCodeReviewValue: 0
+          gerritBuildUnstableVerifiedValue: -1     # testy jednostkowe nie przeszły
+          gerritBuildUnstableCodeReviewValue: 0
+          gerritBuildNotBuiltVerifiedValue: 0
+          gerritBuildNotBuiltCodeReviewValue: 0
+          buildCurrentPatchesOnly:
+            enabled: true
+            abortNewPatchsets: true   # nowy patchset przerywa build starego
+
+jobs:
+  - script: |
+      // Dwa joby uruchamiane przez Gerrit Trigger dla każdego nowego patchsetu.
+      // Pipeline'y (Jenkinsfile) są w repozytorium aplikacji, więc zmiany w CI
+      // też przechodzą przez code review.
+      def gerritJob = { String jobName, String description, String jenkinsfile, boolean vote ->
+        pipelineJob(jobName) {
+          delegate.description(description)
+          properties {
+            pipelineTriggers {
+              triggers {
+                gerrit {
+                  serverName('gerrit')
+                  gerritProjects {
+                    gerritProject {
+                      compareType('PLAIN')
+                      pattern('espresso-hmi')
+                      branches {
+                        branch {
+                          compareType('ANT')
+                          pattern('**')
+                        }
+                      }
+                      disableStrictForbiddenFileVerification(false)
+                    }
+                  }
+                  triggerOnEvents {
+                    patchsetCreated {
+                      excludeDrafts(false)
+                      excludeTrivialRebase(false)
+                      excludeNoCodeChange(true)
+                      excludePrivateState(false)
+                      excludeWipState(false)
+                    }
+                    commentAddedContains {
+                      commentAddedCommentContains('(?i)^(Patch Set [0-9]+:)?\\s*recheck\\s*$')
+                    }
+                  }
+                  if (!vote) {
+                    // AI review głosuje sam (konto ai-reviewer, REST API)
+                    skipVote {
+                      onSuccessful(true)
+                      onFailed(true)
+                      onUnstable(true)
+                      onNotBuilt(true)
+                      onAborted(true)
+                    }
+                  }
+                }
+              }
+            }
+          }
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url('ssh://jenkins@gerrit:29418/espresso-hmi')
+                    credentials('gerrit-ssh')
+                    refspec('$GERRIT_REFSPEC')
+                  }
+                  branch('$GERRIT_BRANCH')
+                  extensions {
+                    choosingStrategy {
+                      gerritTrigger()
+                    }
+                  }
+                }
+              }
+              scriptPath(jenkinsfile)
+              lightweight(false)
+            }
+          }
+        }
+      }
+
+      gerritJob('espresso-hmi-build',
+                'Build, testy jednostkowe, tłumaczenia, cross-build aarch64, podpisana paczka. Głos: Verified.',
+                'ci/Jenkinsfile', true)
+      gerritJob('espresso-hmi-ai-review',
+                'AI code review (Claude) na osobnej maszynie. Głos: Code-Review +1/-1 (konto ai-reviewer).',
+                'ci/Jenkinsfile.ai-review', false)

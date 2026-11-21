@@ -1,0 +1,79 @@
+# Lokalne demo CI: Gerrit (code review) + Jenkins (CI) + agenci.
+# Uruchomienie: ./scripts/up.sh  (szczegóły w README.md)
+name: espresso-ci
+
+services:
+  gerrit:
+    image: gerritcodereview/gerrit:3.14.5
+    hostname: gerrit
+    environment:
+      CANONICAL_WEB_URL: http://localhost:8081/
+    ports:
+      - "8081:8080"     # interfejs WWW i REST API
+      - "29418:29418"   # SSH: git push/fetch, stream-events dla Gerrit Trigger
+    volumes:
+      - gerrit-etc:/var/gerrit/etc
+      - gerrit-git:/var/gerrit/git
+      - gerrit-index:/var/gerrit/index
+      - gerrit-cache:/var/gerrit/cache
+      - gerrit-data:/var/gerrit/data
+    restart: unless-stopped
+
+  jenkins:
+    build:
+      context: .
+      dockerfile: jenkins/Dockerfile
+    image: espresso-ci/jenkins:dev
+    hostname: jenkins
+    environment:
+      SECRETS: /run/secrets          # JCasC czyta ${nazwa} z plików w tym katalogu
+      ESPRESSO_SDK_DIR: ${ESPRESSO_SDK_DIR:-/opt/espresso-sdk}
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins-home:/var/jenkins_home
+      - ./secrets:/run/secrets:ro
+    security_opt:
+      - label=disable                # SELinux (Fedora): dostęp do ./secrets
+    depends_on:
+      - gerrit
+      - build-agent
+      - ai-review-vm
+    restart: unless-stopped
+
+  # Agent buildu: Qt 6 + CMake; Jenkins łączy się przez SSH
+  build-agent:
+    build:
+      context: .
+      dockerfile: build-agent/Dockerfile
+    image: espresso-ci/build-agent:dev
+    hostname: build-agent
+    volumes:
+      - ./secrets/jenkins_agent_key.pub:/secrets/jenkins_agent_key.pub:ro
+      # Toolchain z Yocto do cross-buildu. SDK z Yocto nie da się przenieść
+      # w inne miejsce, więc montujemy go pod tą samą ścieżką co na hoście.
+      - ${ESPRESSO_SDK_DIR:-../demo-rpi/sdk}:${ESPRESSO_SDK_DIR:-/opt/espresso-sdk}:ro
+    security_opt:
+      - label=disable
+    restart: unless-stopped
+
+  # "Osobna maszyna wirtualna" na AI review: tylko SSH, bez dostępu z zewnątrz
+  ai-review-vm:
+    build:
+      context: .
+      dockerfile: ai-review-vm/Dockerfile
+    image: espresso-ci/ai-review-vm:dev
+    hostname: ai-review-vm
+    volumes:
+      - ./secrets/jenkins_agent_key.pub:/secrets/jenkins_agent_key.pub:ro
+    security_opt:
+      - label=disable
+    restart: unless-stopped
+
+volumes:
+  jenkins-home:
+  gerrit-etc:
+  gerrit-git:
+  gerrit-index:
+  gerrit-cache:
+  gerrit-data:

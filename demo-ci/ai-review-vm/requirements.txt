@@ -1,0 +1,2 @@
+# SDK Claude API (przypięta wersja)
+anthropic==2.4.0

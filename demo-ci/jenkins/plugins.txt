@@ -1,0 +1,13 @@
+# Wtyczki Jenkinsa (instalowane przy budowie obrazu)
+configuration-as-code
+job-dsl
+workflow-aggregator
+pipeline-stage-view
+git
+gerrit-trigger
+ssh-slaves
+ssh-credentials
+credentials-binding
+junit
+timestamper
+ansicolor
