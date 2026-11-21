@@ -17,9 +17,9 @@ layout: cover
 subtitle: Rafał Cebryk
 ---
 
-# Od commita do filiżanki espresso
+# Od commita<br>do filiżanki espresso
 
-CI/CD i eksploatacja oprogramowania HMI w ekspresach do kawy
+CI/CD i eksploatacja oprogramowania HMI<br>w ekspresach do kawy
 
 <p class="vc-cover-course">Wdrażanie i eksploatacja systemów informatycznych</p>
 

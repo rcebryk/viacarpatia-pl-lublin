@@ -100,7 +100,10 @@
 .vc-cover-title h1 { font-size: 53px; font-weight: 700; }   /* 40 pt */
 .vc-cover-title h2 { font-size: 44px; font-weight: 700; }
 .vc-cover-title p  { font-size: 26px; margin: 0.4em 0 0; }
-.vc-cover-title .vc-cover-course { margin-top: 0.9em; font-size: 22px; font-style: italic; opacity: 0.9; }
+.vc-cover-title .vc-cover-course { margin-top: 0.9em; font-size: 24px; font-style: italic; }
+/* czytelność białego tekstu na jaśniejszej (prawej) części półprzezroczystego pola */
+.vc-cover-title, .vc-cover-subtitle, .vc-thanks, .vc-section-title { text-shadow: 0 2px 6px rgba(8, 16, 32, 0.75); }
+.vc-cover-title h1 { line-height: 1.15; }
 .vc-cover-subtitle {
   position: absolute;
   left: 54px; top: 495px;
