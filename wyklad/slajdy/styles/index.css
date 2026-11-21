@@ -231,7 +231,7 @@
 /* --- diagram przepływu (siatka pól i strzałek) ------------------------ */
 .vc-flow {
   display: grid;
-  grid-template-columns: 170px 62px 160px 34px 1fr 34px 130px 40px 130px;
+  grid-template-columns: 170px 88px 150px 34px 1fr 34px 126px 40px 126px;
   grid-template-rows: auto 64px auto;
   column-gap: 6px;
   align-items: stretch;
@@ -269,8 +269,18 @@
   font-weight: 700;
 }
 .vc-flow-arrow { text-align: center; font-size: 26px; color: #cfe0ff; }
-.vc-flow > .vc-flow-arrow { align-self: center; }
-.vc-flow-push { font-size: 17px; line-height: 1.1; }
+.vc-flow > .vc-flow-arrow {
+  align-self: center;
+  font-size: 34px; font-weight: 700; color: #e3eeff;
+  -webkit-text-stroke: 1.5px #e3eeff;   /* grubsza kreska strzałki */
+}
+.vc-flow > .vc-flow-push { font-size: 34px; line-height: 1; }
+.vc-flow-push b {
+  display: inline-block; margin-bottom: 4px; padding: 2px 6px;
+  border-radius: 6px; background: rgba(156, 195, 255, 0.25);
+  font-size: 18px; font-weight: 700; color: #ffffff;
+  -webkit-text-stroke: 0; white-space: nowrap;
+}
 .vc-flow-link {
   grid-column: 5; grid-row: 2;
   align-self: center; justify-self: center;
