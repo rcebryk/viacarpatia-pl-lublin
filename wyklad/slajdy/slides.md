@@ -74,7 +74,7 @@ CI/CD i eksploatacja oprogramowania HMI w ekspresach do kawy
 .vc-about-more .vc-card h3 { font-size: 28px; }
 .vc-about-more .vc-card ul { font-size: 23px; }
 .vc-about-more .vc-card li { margin: 3px 0; }
-.vc-about-more .vc-card { padding-bottom: 13px; }
+.vc-about-more .vc-card { padding-bottom: 15px; }
 .vc-about-more .vc-card h3 { margin-bottom: 6px; }
 </style>
 
