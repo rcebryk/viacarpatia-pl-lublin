@@ -27,14 +27,14 @@ CI/CD i eksploatacja oprogramowania HMI w ekspresach do kawy
 
 # O mnie
 
-<div class="vc-cards vc-about-stats" style="--cols: 4; margin-bottom: 18px">
+<div class="vc-cards vc-about-stats" style="--cols: 4; margin-bottom: 14px">
   <div class="vc-card">
     <div class="vc-stat">16 lat</div>
     <div class="vc-stat-label">w IT</div>
   </div>
   <div class="vc-card">
     <div class="vc-stat">12 lat</div>
-    <div class="vc-stat-label">w Mobica, dziś części Cognizant</div>
+    <div class="vc-stat-label">w Mobice, dziś części Cognizant</div>
   </div>
   <div class="vc-card">
     <div class="vc-stat">9. rok</div>
@@ -70,8 +70,9 @@ CI/CD i eksploatacja oprogramowania HMI w ekspresach do kawy
 .vc-about-stats .vc-stat { font-size: 50px; }
 .vc-about-stats .vc-stat-label { font-size: 21px; line-height: 1.3; }
 .vc-about-more .vc-card h3 { font-size: 28px; }
-.vc-about-more .vc-card ul { font-size: 23px; }
-.vc-about-more .vc-card li { margin: 4px 0; }
+.vc-about-more .vc-card ul { font-size: 22px; }
+.vc-about-more .vc-card li { margin: 2px 0; }
+.vc-about-more .vc-card h3 { margin-bottom: 6px; }
 </style>
 
 ---
