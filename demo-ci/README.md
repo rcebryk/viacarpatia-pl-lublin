@@ -54,8 +54,7 @@ a zsynchronizuje kod do gałęzi `main` w Gerricie. Po zmianie klucza API w `.en
 git clone "ssh://rafal@localhost:29418/espresso-hmi" && cd espresso-hmi
 scp -O -p -P 29418 rafal@localhost:hooks/commit-msg .git/hooks/   # Change-Id; -O: Gerrit nie obsługuje SFTP
 git config user.name "Rafał Cebryk"; git config user.email rafal@example.com   # bez prywatnego maila na rzutniku
-printf 'build/\n.qtcreator/\n' >> .git/info/exclude                      # katalogi Qt Creatora poza commitami
-# ... zmiana ...
+# ... zmiana ...  (katalogi buildu Qt Creatora ignoruje .gitignore projektu)
 git commit -am "Menu: nowy napój Flat white"
 git push origin HEAD:refs/for/main                                 # Gerrit wypisze link do zmiany
 ```

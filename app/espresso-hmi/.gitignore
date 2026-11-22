@@ -1,0 +1,6 @@
+# Katalogi buildu (Qt Creator: build/<kit>-<typ>, starsze wersje: build-<projekt>-<kit>-<typ>)
+build/
+build-*/
+# Ustawienia lokalne Qt Creatora
+.qtcreator/
+CMakeLists.txt.user*
