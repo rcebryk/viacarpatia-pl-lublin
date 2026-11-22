@@ -901,6 +901,23 @@ Menu serwisowe → „Symuluj awarię”
   </div>
 </div>
 
+<div class="vc-cards" style="--cols: 2; margin-top: 20px">
+  <div class="vc-card">
+    <h3>Praca z AI</h3>
+    <ul>
+      <li>dobry kontekst i precyzyjne zadanie</li>
+      <li>weryfikacja wyniku: review jak cudzego kodu</li>
+    </ul>
+  </div>
+  <div class="vc-card">
+    <h3>Architektura</h3>
+    <ul>
+      <li>warstwy, odpowiedzialności, czytelne API</li>
+      <li>projekt na lata: utrzymanie i aktualizacje</li>
+    </ul>
+  </div>
+</div>
+
 ---
 layout: end
 subtitle: Rafał Cebryk
