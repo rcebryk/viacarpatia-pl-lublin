@@ -16,7 +16,8 @@ HoReCa i automatów vendingowych - od commita do maszyny w kawiarni.
 
 ## Jak uruchomić
 
-- Slajdy: `cd wyklad/slajdy && ./slidev.sh dev`, potem http://localhost:3030
+- Slajdy online: https://rcebryk.github.io/viacarpatia-pl-lublin/ (budowane przez GitHub Actions)
+- Slajdy: `cd wyklad/slajdy && ./slidev.sh dev`, potem http://localhost:3030 (lokalnie)
 - Aplikacja na komputerze: `cmake -S app/espresso-hmi -B build && cmake --build build && ctest --test-dir build`
   (Qt 6.5+, CMake, Ninja)
 - System dla Raspberry Pi (Yocto + kas w Dockerze): [demo-rpi/README.md](demo-rpi/README.md)
